@@ -1,4 +1,6 @@
-class CreateUserRequest {
+import { ResponseInterface } from "../../../../common/response-interface";
+
+class CreateUserRequest implements ResponseInterface{
 
     private name: string;
     private email: string;

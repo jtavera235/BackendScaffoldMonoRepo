@@ -1,6 +1,6 @@
 import User from "../../../dto/user";
 
-export class UserCreatedEvent {
+export class UserCreatedSuccessEvent {
   
   private user: User;
   

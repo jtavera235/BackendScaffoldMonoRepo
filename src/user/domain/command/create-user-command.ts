@@ -2,7 +2,8 @@ import CreateUserRequest from "../../application/controllers/requests/create-use
 import UserBuilder from '../user-builder';
 import User from '../../../dto/user';
 import EventEmitter from "events";
-import { UserCreatedEvent } from "../events/user-created-event";
+import { UserCreatedSuccessEvent } from "../events/user-created-success-event";
+import { UserCreatedFailedEvent } from "../events/user-created-failed-event";
 
 class CreateUserCommand {
 
@@ -21,7 +22,11 @@ class CreateUserCommand {
 
       this.user = builder.build();
 
-      this.events.emit('userCreated', new UserCreatedEvent(this.user));
+      if (this.user.getName() !== "hell0") {
+        this.events.emit('userCreatedFailed', new UserCreatedFailedEvent("Names do not match"));
+      } else {
+        this.events.emit('userCreatedSuccess', new UserCreatedSuccessEvent(this.user));
+      }
     }
 }
 
