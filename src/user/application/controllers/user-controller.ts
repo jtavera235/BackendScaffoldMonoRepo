@@ -1,4 +1,4 @@
-import CreateUserController from './create-user-controllers';
+import CreateUserController from './subcontrollers/create-user-controllers';
 import AbstractController from "../../../common/abstract-controller";
 
 class UserController extends AbstractController {

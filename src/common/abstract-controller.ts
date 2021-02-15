@@ -7,6 +7,7 @@ abstract class AbstractController extends AbstractExpressClass {
 
     constructor() {
       super();
+      this.middleware();
     }
 
     private middleware(): void {
