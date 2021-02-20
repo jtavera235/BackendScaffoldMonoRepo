@@ -1,13 +1,15 @@
-import { ResponseInterface } from "../../../../common/response-interface";
+import { RequestInterface } from "../../../../common/request-interface";
 
-class CreateUserRequest implements ResponseInterface{
+class CreateUserRequest implements RequestInterface {
 
-    private name: string;
-    private email: string;
+    public name: string;
+    public email: string;
+    public requestId: string;
 
-    constructor(name: string, email: string) {
+    constructor(name: string, email: string, requestId: string) {
         this.name = name;
         this.email = email;
+        this.requestId = requestId;
     }
 
     public getName(): string {
@@ -16,6 +18,10 @@ class CreateUserRequest implements ResponseInterface{
 
     public getEmail(): string {
         return this.email;
+    }
+
+    public getRequestId(): string {
+        return this.requestId;
     }
 
 }

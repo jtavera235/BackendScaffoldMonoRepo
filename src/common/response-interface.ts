@@ -1,1 +1,3 @@
-export interface ResponseInterface {}
+export interface ResponseInterface {
+  getStatus(): number;
+}

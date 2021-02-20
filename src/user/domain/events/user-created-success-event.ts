@@ -1,4 +1,4 @@
-import User from "../../../dto/user";
+import User from "../../../dto/user/user";
 
 export class UserCreatedSuccessEvent {
   

@@ -1,1 +1,3 @@
-export interface RequestInterface {}
+export interface RequestInterface {
+  requestId: string;
+}

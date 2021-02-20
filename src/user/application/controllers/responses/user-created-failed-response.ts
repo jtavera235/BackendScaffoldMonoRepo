@@ -1,13 +1,12 @@
-import { UserCreatedFailedEvent } from "../../../domain/events/user-created-failed-event";
-import { UserCreatedResponseInterface } from "./user-created-response-interface";
+import AbstractResponse from "../../../../common/abstract-response";
 
-class UserCreatedFailedResponse implements UserCreatedResponseInterface {
+class UserCreatedFailedResponse extends AbstractResponse {
   private readonly message: string;
 
-  public constructor(message: string) {
+  public constructor(message: string, status: number) {
+    super(status);
     this.message = message;
   }
-
 }
 
-export default UserCreatedFailedEvent;
+export default UserCreatedFailedResponse;
