@@ -3,21 +3,32 @@ import * as bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import { Log } from "./logger/logger";
+import EventEmitter from "events";
+const rateLimit = require("express-rate-limit");
 
 abstract class AbstractController extends AbstractExpressClass {
 
   public logger: Log;
+  public eventSubscriber: EventEmitter;
 
   constructor() {
     super();
     this.middleware();
     this.logger = new Log();
+    this.eventSubscriber = new EventEmitter();
   }
 
   private middleware(): void {
     this.express.use(bodyParser.json());
     this.express.use(cors());
     this.express.use(helmet());
+
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 50 // limit each IP to 100 requests per windowMs
+    });
+    this.express.use(limiter);
+
   }
 }
 

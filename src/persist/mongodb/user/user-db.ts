@@ -1,7 +1,7 @@
 import mongoose, { Model, Schema } from "mongoose";
 import GeneralError from "../../../common/general-error";
 import { Log } from "../../../common/logger/logger";
-import { UserInterface } from "..//user-interface";
+import { UserInterface } from "./user-interface";
 
 class UserDB {
 
@@ -36,10 +36,15 @@ class UserDB {
       email: {
         type: String,
         required: true,
+        unique: true
+      },
+      uuid: {
+        type: String,
+        required: true,
+        unique: true
       }
     });
   }
-
 }
 
 const UserModel: Model<UserInterface> = mongoose.model('User', new UserDB().schema);

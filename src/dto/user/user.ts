@@ -1,13 +1,14 @@
+import UserResponse from "../../user/application/controllers/responses/user-response";
 
 class User {
   public email: string;
   public name: string;
-  private id: string;
+  public uuid: string;
 
-  constructor(email: string, name: string, id: string) {
+  constructor(email: string, name: string) {
       this.email = email;
       this.name = name;
-      this.id = id;
+      this.uuid = this.generateUserUniqueId();
   }
 
   public getName(): string {
@@ -15,7 +16,25 @@ class User {
   }
 
   public getEmail(): string {
-      return this.email;
+    return this.email;
+  }
+
+  public getId(): string {
+    return this.uuid;
+  }
+
+  private generateUserUniqueId(): string {
+   let result = 'CUSTOM_';
+   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   let charactersLength = characters.length;
+   for ( let i = 0; i < 15; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+  }
+
+  public toDomain(): UserResponse {
+    return new UserResponse(this.email, this.name, this.uuid);
   }
 }
 

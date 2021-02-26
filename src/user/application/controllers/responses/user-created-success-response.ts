@@ -1,16 +1,22 @@
+import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
 import User from "../../../../dto/user/user";
-import AbstractResponse from "../../../../common/abstract-response";
+import { UserCreatedResponseInterface } from "./user-created-response-interface";
+import UserResponse from "./user-response";
 
-class UserCreatedSuccessResponse extends AbstractResponse {
+class UserCreatedSuccessResponse implements UserCreatedResponseInterface {
   private readonly message: string;
-  private readonly body: User;
+  private readonly body: UserResponse;
+  public status: StatusCodeEnum;
 
-  public constructor(message: string, body: User, status: number) {
-    super(status);
+  public constructor(message: string, user: User, status: StatusCodeEnum) {
     this.message = message;
-    this.body = body;
+    this.body = user.toDomain();
+    this.status = status;
   }
 
+  public getStatus(): number {
+    return this.status;
+  }
 }
 
 export default UserCreatedSuccessResponse;

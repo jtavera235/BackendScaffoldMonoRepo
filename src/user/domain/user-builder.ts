@@ -1,9 +1,9 @@
+import { UserAuthRolesEnum } from '../../common/enums/user-auth-roles-enum';
 import User from '../../dto/user/user';
 
 class UserBuilder {
 
     private name: string = '';
-    private id: string = '';
     private email: string = '';
 
 
@@ -15,15 +15,10 @@ class UserBuilder {
       this.email = email;
     }
 
-    public withID(id: string): void {
-      this.id = id;
-    }
-
     public build(): User {
       return new User (
           this.email,
-          this.name,
-          this.id
+          this.name
       );
     }
 }
