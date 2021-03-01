@@ -3,20 +3,17 @@ import * as bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import { Log } from "./logger/logger";
-import EventEmitter from "events";
 /* eslint-disable */
 const rateLimit = require("express-rate-limit");
 
 abstract class AbstractController extends AbstractExpressClass {
 
   public logger: Log;
-  public eventSubscriber: EventEmitter;
 
   constructor() {
     super();
     this.middleware();
     this.logger = new Log();
-    this.eventSubscriber = new EventEmitter();
   }
 
   private middleware(): void {

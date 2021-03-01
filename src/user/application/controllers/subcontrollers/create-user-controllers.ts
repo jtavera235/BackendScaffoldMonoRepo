@@ -9,15 +9,15 @@ import { UserCreatedFailedEvent } from "../../../domain/events/user-created-fail
 import { APIActionsEnum } from "../../../../common/enums/api-actions-enums";
 import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
 import { UserCreatedEventEnums } from "../../../domain/events/user-created-events-enums";
+import EventEmitter from "events";
 
 class CreateUserController extends AbstractController {
 
-    private createUserCommand: CreateUserCommand;
     private response!: UserCreatedResponseInterface;
 
-    constructor() {
+    constructor(private readonly createUserCommand: CreateUserCommand,
+      private readonly eventSubscriber: EventEmitter) {
       super();
-      this.createUserCommand = new CreateUserCommand(this.eventSubscriber);
       this.routes();
     }
 
@@ -36,7 +36,11 @@ class CreateUserController extends AbstractController {
         this.eventSubscriber.on(UserCreatedEventEnums.SUCCESS, this.userCreatedSuccess.bind(this));
         this.eventSubscriber.on(UserCreatedEventEnums.FAILED, this.userCreatedFailed.bind(this));
 
-        await this.createUserCommand.execute(request);
+        try {
+          await this.createUserCommand.execute(request); 
+        }
+        /* eslint-disable */
+        catch(_) {}
 
         this.logger.logApiResponses(this.response, apiAction, route);
         
@@ -56,4 +60,4 @@ class CreateUserController extends AbstractController {
 
 }
 
-export default new CreateUserController().express;
+export default CreateUserController;

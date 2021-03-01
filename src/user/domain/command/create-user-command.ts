@@ -5,23 +5,20 @@ import EventEmitter from "events";
 import { UserCreatedSuccessEvent } from "../events/user-created-success-event";
 import { UserCreatedFailedEvent } from "../events/user-created-failed-event";
 import { UserCreatedEventEnums } from "../events/user-created-events-enums";
-import UserRepository from "../../../persist/mongodb/user/user-repository";
 import { Log } from "../../../common/logger/logger";
 import AuthenticationService from "../../../common/middleware/auth/authentication-service";
+import { UserRepositoryInterface } from "../../../persist/mongodb/user/user-repository-interface";
 
 class CreateUserCommand {
 
-    private events: EventEmitter;
     private user!: User;
-    private userRepository: UserRepository;
     private logger: Log;
-    private authService: AuthenticationService;
 
-    constructor(event: EventEmitter) {
-      this.events = event;
-      this.userRepository = new UserRepository();
+    constructor(
+      private readonly events: EventEmitter,
+       private readonly userRepository: UserRepositoryInterface,
+       private readonly authService: AuthenticationService) {
       this.logger = new Log();
-      this.authService = new AuthenticationService();
     }
 
     public async execute(request: CreateUserRequest): Promise<boolean> {
@@ -31,12 +28,13 @@ class CreateUserCommand {
       builder.withName(name);
 
       this.user = builder.build();
+      this.user.generateUserUniqueId();
       
       return await this.userRepository.save(this.user).then(() => {
         return Promise.resolve(this.events.emit(UserCreatedEventEnums.SUCCESS, new UserCreatedSuccessEvent(this.user)));
       }).catch(err => {
         this.logger.logErrorFailures(err);
-        return Promise.resolve(this.events.emit(UserCreatedEventEnums.FAILED, new UserCreatedFailedEvent("Error occurred while creating a new user.")));
+        return Promise.reject(this.events.emit(UserCreatedEventEnums.FAILED, new UserCreatedFailedEvent("Error occurred while creating a new user.")));
       })
     }
 }

@@ -3,12 +3,12 @@ import UserResponse from "../../user/application/controllers/responses/user-resp
 class User {
   public email: string;
   public name: string;
-  public uuid: string;
+  public uuid?: string;
 
-  constructor(email: string, name: string) {
+  constructor(email: string, name: string, uuid?: string) {
       this.email = email;
       this.name = name;
-      this.uuid = this.generateUserUniqueId();
+      this.uuid = uuid;
   }
 
   public getName(): string {
@@ -19,18 +19,18 @@ class User {
     return this.email;
   }
 
-  public getId(): string {
+  public getId(): string | undefined {
     return this.uuid;
   }
 
-  private generateUserUniqueId(): string {
+  public generateUserUniqueId():void {
    let result = 'CUSTOM_';
    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
    const charactersLength = characters.length;
    for ( let i = 0; i < 15; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
-   return result;
+   this.uuid = result;
   }
 
   public toDomain(): UserResponse {

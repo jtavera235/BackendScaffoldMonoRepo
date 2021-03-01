@@ -9,15 +9,15 @@ import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
 import { GetUserFailedEvent } from "../../../domain/events/get-user-failed-event";
 import GetUserFailedResponse from "../responses/get-user-failed-response";
 import GetUserCommand from "../../../domain/command/get-user-command";
+import EventEmitter from "events";
 
 class GetUserController extends AbstractController {
 
   private response!: GetUserResponseInterface;
-  private command: GetUserCommand;
 
-  public constructor() {
+  public constructor(private readonly command: GetUserCommand,
+    private readonly eventSubscriber: EventEmitter) {
     super();
-    this.command = new GetUserCommand(this.eventSubscriber);
     this.routes();
   }
 
@@ -36,7 +36,11 @@ class GetUserController extends AbstractController {
       this.eventSubscriber.on(GetUserEventEnums.SUCCESS, this.userRetrievedSuccessful.bind(this));
       this.eventSubscriber.on(GetUserEventEnums.FAILED, this.userRetrievedFailed.bind(this));
 
-      await this.command.execute(request);
+      try {
+        await this.command.execute(request);
+      }
+      /* eslint-disable */
+      catch(_) {}
 
       this.logger.logApiResponses(this.response, apiAction, route);
       return res
@@ -55,4 +59,4 @@ class GetUserController extends AbstractController {
 
 }
 
-export default new GetUserController().express;
+export default GetUserController;

@@ -1,3 +1,4 @@
+import EventEmitter from "events";
 import AbstractController from "../../../../common/abstract-controller";
 import { APIActionsEnum } from "../../../../common/enums/api-actions-enums";
 import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
@@ -13,12 +14,11 @@ import UpdateUserResponseSuccess from "../responses/update-user-response-success
 class UpdateUserController extends AbstractController {
 
   private response!: UpdateUserResponseInterface;
-  private command: UpdateUserCommand;
 
-  public constructor() {
+  public constructor(private readonly command: UpdateUserCommand,
+    private readonly eventSubscriber: EventEmitter) {
     super();
     this.routes();
-    this.command = new UpdateUserCommand(this.eventSubscriber);
   }
 
   private routes(): void {
@@ -37,7 +37,11 @@ class UpdateUserController extends AbstractController {
       this.eventSubscriber.on(UpdateUserEventEnum.SUCCESS, this.updateUserSuccess.bind(this));
       this.eventSubscriber.on(UpdateUserEventEnum.FAILED, this.updateUserFailed.bind(this));
 
-      await this.command.execute(request);
+      try {
+        await this.command.execute(request);
+      }
+      /* eslint-disable */
+      catch (_) {}
 
       this.logger.logApiResponses(this.response, apiAction, route);
         
@@ -57,4 +61,4 @@ class UpdateUserController extends AbstractController {
   }
 }
 
-export default new UpdateUserController().express;
+export default UpdateUserController;

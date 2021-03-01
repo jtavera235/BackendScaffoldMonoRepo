@@ -2,8 +2,9 @@ import { Log } from "../../../common/logger/logger";
 import User from "../../../dto/user/user";
 import { UserInterface } from "./user-interface";
 import { UserModel } from "./user-db";
+import { UserRepositoryInterface } from "./user-repository-interface";
 
-class UserRepository {
+class UserRepository implements UserRepositoryInterface {
 
   private logger: Log;
 
