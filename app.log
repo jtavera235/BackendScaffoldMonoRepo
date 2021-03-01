@@ -1,0 +1,12 @@
+[33m[nodemon] 2.0.7[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): src/**/*[39m
+[33m[nodemon] watching extensions: ts,json[39m
+[32m[nodemon] starting `ts-node ./src/index.ts`[39m
+[90m2021-03-01 23:10:59.003  [39m[1m[92mDEBUG[39m[22m [90m[src/common/logger/logger.ts:47  Log.logMessage][39m 3/1/2021, 6:10:58 PM message: Attempting to connect to User Database 
+(node:57269) Warning: Accessing non-existent property 'MongoError' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+[90m2021-03-01 23:10:59.009  [39m[1m[92mDEBUG[39m[22m [90m[src/common/logger/logger.ts:47  Log.logMessage][39m 3/1/2021, 6:10:59 PM message: [server]: Server is running at https://localhost:3000 
+[90m2021-03-01 23:10:59.010  [39m[1m[92mDEBUG[39m[22m [90m[src/common/logger/logger.ts:47  Log.logMessage][39m 3/1/2021, 6:10:59 PM message: Waiting to receieve incoming requests 
+(node:57269) DeprecationWarning: Listening to events on the Db class has been deprecated and will be removed in the next major version.
+[90m2021-03-01 23:10:59.272  [39m[1m[92mDEBUG[39m[22m [90m[src/common/logger/logger.ts:47  Log.logMessage][39m 3/1/2021, 6:10:59 PM message: Successfully connected to User Database 

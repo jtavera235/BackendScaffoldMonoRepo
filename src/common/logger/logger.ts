@@ -8,7 +8,10 @@ export class Log {
   private logger: Logger;
 
   public constructor() {
-    this.logger = new Logger();
+    this.logger = new Logger({
+      maskValuesOfKeys: ["test", "authorization", "password", "authentication"],
+      maskAnyRegEx: ["CUSTOM.*"]
+    });
   }
 
   public logApiRequests(request: RequestInterface, action: APIActionsEnum, route: string): void { 
@@ -16,17 +19,6 @@ export class Log {
       message: `Starting ${action} request made to ${route}`,
       request: request,
       requestId: request.requestId,
-      method: action,
-      url: route,
-      timestamp: new Date().toLocaleString(),
-    });
-  }
-
-  public logSecretApiRequests(request: RequestInterface, action: APIActionsEnum, route: string): void {
-
-    this.logger.debug({
-      message: `Starting ${action} request made to ${route}`,
-      request: request,
       method: action,
       url: route,
       timestamp: new Date().toLocaleString(),
