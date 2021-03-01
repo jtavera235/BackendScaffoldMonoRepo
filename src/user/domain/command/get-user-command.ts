@@ -6,14 +6,17 @@ import { GetUserFailedEvent } from "../events/get-user-failed-event";
 import { GetUserEventEnums } from "../events/get-user-event-enums";
 import { GetUserSuccessEvent } from "../events/get-user-success-event";
 import { UserInterface } from "../../../persist/mongodb/user/user-interface";
+import { Log } from "../../../common/logger/logger";
 
 class GetUserCommand {
   private user!: User;
+  private logger: Log;
 
   constructor(
     private readonly event: EventEmitter,
     private readonly userRepository: UserRepositoryInterface
     ) {
+      this.logger = new Log();
   }
 
   public async execute(request: GetUserRequest): Promise<boolean> {
@@ -28,7 +31,8 @@ class GetUserCommand {
 
       this.user = new User(userResult.email, userResult.name, userResult.uuid);
       return Promise.resolve(this.event.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(this.user.toDomain())));
-    }).catch(() => {
+    }).catch((err) => {
+      this.logger.logErrorFailures(err);
       return Promise.reject(this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
     });
   }

@@ -10,6 +10,7 @@ import { GetUserFailedEvent } from "../../../domain/events/get-user-failed-event
 import GetUserFailedResponse from "../responses/get-user-failed-response";
 import GetUserCommand from "../../../domain/command/get-user-command";
 import EventEmitter from "events";
+import { Request, Response } from 'express';
 
 class GetUserController extends AbstractController {
 

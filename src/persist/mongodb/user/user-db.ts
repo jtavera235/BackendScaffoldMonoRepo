@@ -14,9 +14,9 @@ class UserDB {
     this.defineSchema();
   }
 
-  public connectToDB(): void {
+  public async connectToDB(): Promise<void> {
     this.logger.logMessage("Attempting to connect to User Database");
-    mongoose.connect(this.uri, {
+    await mongoose.connect(this.uri, {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true
