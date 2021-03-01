@@ -27,6 +27,7 @@ class CreateUserSuccessMockResponse implements UserCreatedResponseInterface  {
 
 class CreateUserFailedCommandMock {
   public constructor(private readonly event: EventEmitter) {}
+  /* eslint-disable */
   public async execute(_: CreateUserRequest): Promise<boolean> {
     return Promise.resolve(this.event.emit(UserCreatedEventEnums.FAILED, new UserCreatedFailedEvent("Error occurred while creating a new user.")));
   }
@@ -45,9 +46,9 @@ class CreateUserFiledMockResponse implements UserCreatedResponseInterface  {
 describe('Test creating new users', () => {
 
   it('Test successfully creating a new user', async () => {
-    let event = new EventEmitter();
-    let command = new CreateUserSuccessCommandMock(event);
-    let createUserRequest = new CreateUserRequest(faker.name.findName(), faker.internet.email(), '1');
+    const event = new EventEmitter();
+    const command = new CreateUserSuccessCommandMock(event);
+    const createUserRequest = new CreateUserRequest(faker.name.findName(), faker.internet.email(), '1');
     let response!: UserCreatedResponseInterface;
   
     event.on(UserCreatedEventEnums.SUCCESS, () => {
@@ -60,9 +61,9 @@ describe('Test creating new users', () => {
   })
 
   it('Test failing to create a new user', async () => {
-    let event = new EventEmitter();
-    let command = new CreateUserFailedCommandMock(event);
-    let createUserRequest = new CreateUserRequest(faker.name.findName(), faker.internet.email(), '1');
+    const event = new EventEmitter();
+    const command = new CreateUserFailedCommandMock(event);
+    const createUserRequest = new CreateUserRequest(faker.name.findName(), faker.internet.email(), '1');
     let response!: UserCreatedResponseInterface;
   
     event.on(UserCreatedEventEnums.FAILED, () => {

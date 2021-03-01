@@ -46,10 +46,8 @@ class App {
       res.send("Successfuly health check");
     });
 
-    // user route
     this.express.use("/api", Routes);
 
-    // handle undefined routes
     // eslint:disable-next-line
     this.express.use("*", (_, res) => {
       res.send("Specified route is incorrect");

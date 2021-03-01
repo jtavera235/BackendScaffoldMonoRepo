@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { Log } from "./logger/logger";
 import EventEmitter from "events";
+/* eslint-disable */
 const rateLimit = require("express-rate-limit");
 
 abstract class AbstractController extends AbstractExpressClass {
