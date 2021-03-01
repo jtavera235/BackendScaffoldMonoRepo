@@ -27,6 +27,21 @@ describe('Test creating new users', () => {
     expect(response.status).toEqual(StatusCodeEnum.OK);
   })
 
+  it('Successfully does something', async () => {
+    const event = new EventEmitter();
+    const command = new CreateUserCommand(event, new MockUserRepository(), new AuthenticationService());
+    const createUserRequest = new CreateUserRequest(faker.name.findName(), "fail@fail.com", '1');
+    let response!: UserCreatedResponseInterface;
+
+    await command.execute(createUserRequest).then(() => {
+      response = new UserSuccessMockResponse();
+    }).catch(() => {
+      response = new UserFailedMockResponse();
+    });
+
+    expect(response.status).toEqual(StatusCodeEnum.OK);
+  })
+
   it('Failing to create a new user', async () => {
     const event = new EventEmitter();
     const command = new CreateUserCommand(event, new MockUserRepository(), new AuthenticationService());
