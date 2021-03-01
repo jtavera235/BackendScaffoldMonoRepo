@@ -1,4 +1,3 @@
-import User from "../../../dto/user/user";
 import UserResponse from "../../application/controllers/responses/user-response";
 
 export class UpdateUserSuccessEvent {

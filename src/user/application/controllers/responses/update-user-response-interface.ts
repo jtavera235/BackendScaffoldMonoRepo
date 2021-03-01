@@ -1,3 +1,3 @@
 import { ResponseInterface } from "../../../../common/response-interface";
 
-export interface UpdateUserResponseInterface extends ResponseInterface {}
+export type UpdateUserResponseInterface = ResponseInterface

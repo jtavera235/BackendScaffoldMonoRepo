@@ -42,7 +42,7 @@ class App {
   }
 
   private routes(): void {
-    this.express.get("/", (req, res, next) => {
+    this.express.get("/", (_, res) => {
       res.send("Successfuly health check");
     });
 
@@ -50,7 +50,8 @@ class App {
     this.express.use("/api", Routes);
 
     // handle undefined routes
-    this.express.use("*", (req, res, next) => {
+    // eslint:disable-next-line
+    this.express.use("*", (_, res) => {
       res.send("Specified route is incorrect");
     });
   }

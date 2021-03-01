@@ -1,8 +1,6 @@
 import AbstractController from "../../../../common/abstract-controller";
 import { APIActionsEnum } from "../../../../common/enums/api-actions-enums";
 import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
-import { UserAuthRolesEnum } from "../../../../common/enums/user-auth-roles-enum";
-import permit from "../../../../common/middleware/authorization";
 import UpdateUserCommand from "../../../domain/command/update-user-command";
 import { UpdateUserEventEnum } from "../../../domain/events/update-user-event-enum";
 import { UpdateUserFailedEvent } from "../../../domain/events/update-user-failed-event";
@@ -31,7 +29,7 @@ class UpdateUserController extends AbstractController {
     const apiAction = APIActionsEnum.PUT;
     const route = '/api/users/:userId';
 
-    this.express.put('/:userId', async (req, res, next) => {
+    this.express.put('/:userId', async (req, res) => {
       // COMPARE JWT TOKEN DECODED USER ID TO THE PASSED USER ID
       const request = new UpdateUserRequest(req.body.requestId, req.body.user, req.params.userId);
       this.logger.logApiRequests(request, apiAction, route);

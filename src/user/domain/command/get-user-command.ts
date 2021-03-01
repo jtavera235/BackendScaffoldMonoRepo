@@ -5,6 +5,7 @@ import GetUserRequest from "../../application/controllers/requests/get-user-requ
 import { GetUserFailedEvent } from "../events/get-user-failed-event";
 import { GetUserEventEnums } from "../events/get-user-event-enums";
 import { GetUserSuccessEvent } from "../events/get-user-success-event";
+import { UserInterface } from "../../../persist/mongodb/user/user-interface";
 
 class GetUserCommand {
   private events: EventEmitter;
@@ -20,9 +21,15 @@ class GetUserCommand {
 
     return await this.userRepository.retrieve(request.userId).then((result) => {
 
-      this.user = new User(result!.email, result!.name);
+      if (result === null) {
+        return Promise.resolve(this.events.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
+      }
+
+      const userResult: UserInterface = result;
+
+      this.user = new User(userResult.email, userResult.name);
       return Promise.resolve(this.events.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(this.user.toDomain())));
-    }).catch(err => {
+    }).catch(() => {
       return Promise.resolve(this.events.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
     });
   }

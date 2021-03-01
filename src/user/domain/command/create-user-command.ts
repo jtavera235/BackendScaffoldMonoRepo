@@ -2,13 +2,11 @@ import CreateUserRequest from "../../application/controllers/requests/create-use
 import UserBuilder from '../user-builder';
 import User from '../../../dto/user/user';
 import EventEmitter from "events";
-
 import { UserCreatedSuccessEvent } from "../events/user-created-success-event";
 import { UserCreatedFailedEvent } from "../events/user-created-failed-event";
 import { UserCreatedEventEnums } from "../events/user-created-events-enums";
 import UserRepository from "../../../persist/mongodb/user/user-repository";
 import { Log } from "../../../common/logger/logger";
-import { UserAuthRolesEnum } from "../../../common/enums/user-auth-roles-enum";
 import AuthenticationService from "../../../common/middleware/auth/authentication-service";
 
 class CreateUserCommand {
@@ -27,22 +25,19 @@ class CreateUserCommand {
     }
 
     public async execute(request: CreateUserRequest): Promise<boolean> {
-      let builder = new UserBuilder();
+      const builder = new UserBuilder();
       builder.withEmail(request.getEmail());
       const name = this.authService.hash(request.getName());
       builder.withName(name);
 
       this.user = builder.build();
       
-      let returnPromise: Promise<boolean>;
-
-      await this.userRepository.save(this.user).then(() => {
-        returnPromise = Promise.resolve(this.events.emit(UserCreatedEventEnums.SUCCESS, new UserCreatedSuccessEvent(this.user)));
+      return await this.userRepository.save(this.user).then(() => {
+        return Promise.resolve(this.events.emit(UserCreatedEventEnums.SUCCESS, new UserCreatedSuccessEvent(this.user)));
       }).catch(err => {
         this.logger.logErrorFailures(err);
-        returnPromise = Promise.resolve(this.events.emit(UserCreatedEventEnums.FAILED, new UserCreatedFailedEvent("Error occurred while creating a new user.")));
+        return Promise.resolve(this.events.emit(UserCreatedEventEnums.FAILED, new UserCreatedFailedEvent("Error occurred while creating a new user.")));
       })
-      return returnPromise!
     }
 }
 

@@ -29,7 +29,7 @@ class GetUserController extends AbstractController {
     const apiAction = APIActionsEnum.GET;
     const route = '/api/users/{userId}';
 
-    this.express.get('/:userId', async (req, res, next) => {
+    this.express.get('/:userId', async (req, res) => {
       const request = new GetUserRequest(req.body.requestId, req.params.userId);
       this.logger.logApiRequests(request, apiAction, route);
 
@@ -50,7 +50,7 @@ class GetUserController extends AbstractController {
   }
 
   private userRetrievedFailed(event: GetUserFailedEvent): void {
-    this.response = new GetUserFailedResponse("Failed to get user", StatusCodeEnum.BAD_REQUEST);
+    this.response = new GetUserFailedResponse(event.getReason(), StatusCodeEnum.BAD_REQUEST);
   }
 
 }

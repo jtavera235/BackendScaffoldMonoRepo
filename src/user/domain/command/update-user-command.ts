@@ -22,8 +22,8 @@ class UpdateUserCommand {
 
     return await this.userRepository.update(request.userId, this.user).then(() => {
       return Promise.resolve(this.events.emit(UpdateUserEventEnum.SUCCESS, new UpdateUserSuccessEvent(this.user)));
-    }).catch((err) => {
-      return Promise.resolve(this.events.emit(UpdateUserEventEnum.FAILED, new UpdateUserFailedEvent(err as string)));
+    }).catch(() => {
+      return Promise.resolve(this.events.emit(UpdateUserEventEnum.FAILED, new UpdateUserFailedEvent("An error occurred while updating the user.")));
     });
   }
 

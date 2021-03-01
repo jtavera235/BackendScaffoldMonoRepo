@@ -1,10 +1,9 @@
-import { UserAuthRolesEnum } from '../../common/enums/user-auth-roles-enum';
 import User from '../../dto/user/user';
 
 class UserBuilder {
 
-    private name: string = '';
-    private email: string = '';
+    private name = '';
+    private email = '';
 
 
     public withName(name: string): void {

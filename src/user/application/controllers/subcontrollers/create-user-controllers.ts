@@ -29,8 +29,8 @@ class CreateUserController extends AbstractController {
       const apiAction = APIActionsEnum.POST;
       const route = '/api/users/';
 
-      this.express.post('/', async (req, res, _) => {
-        const request = new CreateUserRequest(req.body.name, req.body.email, req.body.requestId, req.body.role);
+      this.express.post('/', async (req, res) => {
+        const request = new CreateUserRequest(req.body.name, req.body.email, req.body.requestId);
         this.logger.logApiRequests(request, apiAction, route);
 
         this.eventSubscriber.on(UserCreatedEventEnums.SUCCESS, this.userCreatedSuccess.bind(this));

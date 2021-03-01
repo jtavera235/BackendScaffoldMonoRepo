@@ -14,7 +14,7 @@ class UserDB {
     this.defineSchema();
   }
 
-  public connectToDB() {
+  public connectToDB(): void {
     this.logger.logMessage("Attempting to connect to User Database");
     mongoose.connect(this.uri, {
       useCreateIndex: true,
@@ -27,7 +27,7 @@ class UserDB {
     })
   }
 
-  public defineSchema() {
+  public defineSchema(): void {
     this.schema = new mongoose.Schema({
       name: {
         type: String,
