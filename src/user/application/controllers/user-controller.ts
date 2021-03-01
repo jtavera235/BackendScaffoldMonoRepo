@@ -19,8 +19,6 @@ class UserController extends AbstractController {
 
   private routes(): void {
 
-    let name = 'Juan';
-    
     const userRepository: UserRepositoryInterface = new UserRepository();
     const authenticationService = new AuthenticationService();
     const eventSubscriber = new EventEmitter();
