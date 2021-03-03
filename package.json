@@ -7,7 +7,7 @@
     "test": "jest test/**/*.spec.ts",
     "start": "nodemon",
     "start:prod": "nodemon > app.log 2>&1",
-    "seed": "npx ts-node src/persist/mongodb/user/seed-users.ts",
+    "seed:users": "npx ts-node src/persist/mongodb/user/seed-users.ts",
     "webpack": "webpack --config webpack.config.ts",
     "tslint": "tslint --project tsconfig.json --config tslint.json",
     "tslint-fix": "tslint --project tsconfig.json --config tslint.json --fix",
