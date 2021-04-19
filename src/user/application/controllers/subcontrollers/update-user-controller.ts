@@ -29,9 +29,9 @@ class UpdateUserController extends AbstractController {
     const apiAction = APIActionsEnum.PUT;
     const route = '/api/users/:userId';
 
-    this.express.put('/:userId', async (req, res) => {
-      // COMPARE JWT TOKEN DECODED USER ID TO THE PASSED USER ID
-      const request = new UpdateUserRequest(req.body.requestId, req.body.user, req.params.userId);
+    this.express.put('/', async (req, res) => {
+      const id = res.locals.data.userId;
+      const request = new UpdateUserRequest(req.body.requestId, req.body.user, id);
       this.logger.logApiRequests(request, apiAction, route);
 
       this.eventSubscriber.on(UpdateUserEventEnum.SUCCESS, this.updateUserSuccess.bind(this));

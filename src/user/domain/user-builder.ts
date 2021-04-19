@@ -2,12 +2,12 @@ import User from '../../dto/user/user';
 
 class UserBuilder {
 
-    private name = '';
+    private password = '';
     private email = '';
 
 
-    public withName(name: string): void {
-      this.name = name;
+    public withPassword(password: string): void {
+      this.password = password;
     }
 
     public withEmail(email: string): void {
@@ -17,7 +17,7 @@ class UserBuilder {
     public build(): User {
       return new User (
           this.email,
-          this.name
+          this.password
       );
     }
 }

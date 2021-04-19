@@ -9,7 +9,7 @@ export class Log {
 
   public constructor() {
     this.logger = new Logger({
-      maskValuesOfKeys: ["test", "authorization", "password", "authentication"],
+      maskValuesOfKeys: ["test", "authorization", "password", "authentication", "access", "refresh"],
       maskAnyRegEx: ["CUSTOM.*"]
     });
   }

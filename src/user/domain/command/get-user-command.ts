@@ -9,7 +9,6 @@ import { UserInterface } from "../../../persist/mongodb/user/user-interface";
 import { Log } from "../../../common/logger/logger";
 
 class GetUserCommand {
-  private user!: User;
   private logger: Log;
 
   constructor(
@@ -21,20 +20,13 @@ class GetUserCommand {
 
   public async execute(request: GetUserRequest): Promise<boolean> {
 
-    return await this.userRepository.retrieve(request.userId).then((result) => {
+    const userResult = await this.userRepository.retrieve(request.userId);
 
-      if (result === null) {
-        return Promise.resolve(this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
-      }
-
-      const userResult: UserInterface = result;
-
-      this.user = new User(userResult.email, userResult.name, userResult.uuid);
-      return Promise.resolve(this.event.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(this.user.toDomain())));
-    }).catch((err) => {
-      this.logger.logErrorFailures(err);
+    if (userResult === null) {
       return Promise.reject(this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
-    });
+    }
+    return Promise.resolve(this.event.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(userResult.toDomain())));
+
   }
 }
 

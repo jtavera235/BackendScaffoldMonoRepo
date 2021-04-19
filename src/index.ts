@@ -11,7 +11,7 @@ import { Log } from "./common/logger/logger";
 class App {
    
   public express: express.Application;
-  private PORT: number;
+  private readonly PORT: number;
   private database: UserDB;
   private logger: Log;
 
@@ -43,10 +43,11 @@ class App {
 
   private routes(): void {
     this.express.get("/", (_, res) => {
-      res.send("Successfuly health check");
+      res.send("Successfully health check");
     });
 
-    this.express.use("/api", Routes);
+    const route = '/api';
+    this.express.use(route, Routes);
 
     // eslint:disable-next-line
     this.express.use("*", (_, res) => {
@@ -55,10 +56,10 @@ class App {
   }
 
   private async establishConnections(): Promise<void> {
-    this.database.connectToDB();
+    await this.database.connectToDB();
     this.express.listen(this.PORT, () => {
       this.logger.logMessage(`[server]: Server is running at https://localhost:${this.PORT}`);
-      this.logger.logMessage('Waiting to receieve incoming requests');
+      this.logger.logMessage('Waiting to receive incoming requests');
     });
   }
 }

@@ -1,7 +1,7 @@
 import UserResponse from "../../application/controllers/responses/user-response";
 
 export class UpdateUserSuccessEvent {
-  private user: UserResponse;
+  private readonly user: UserResponse;
   
   constructor(user: UserResponse) {
     this.user = user;

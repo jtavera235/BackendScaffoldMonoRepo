@@ -1,7 +1,7 @@
-export class UserCreatedFailedEvent {
-  
+export class SignupEventFailed {
+
   private reason: string;
-  
+
   constructor(reason: string) {
     this.reason = reason;
   }
@@ -9,5 +9,4 @@ export class UserCreatedFailedEvent {
   public getReason(): string {
     return this.reason;
   }
-
 }

@@ -9,7 +9,6 @@ import { UpdateUserSuccessEvent } from "../events/update-user-success-event";
 
 class UpdateUserCommand {
 
-  private user!: User;
   private logger: Log;
 
   constructor(
@@ -20,15 +19,12 @@ class UpdateUserCommand {
     }
 
   public async execute(request: UpdateUserRequest): Promise<boolean> {
+    const updatedUser = await this.userRepository.update(request.userId, request.user);
 
-    this.user = request.user;
-
-    return await this.userRepository.update(request.userId, this.user).then(() => {
-      return Promise.resolve(this.event.emit(UpdateUserEventEnum.SUCCESS, new UpdateUserSuccessEvent(this.user)));
-    }).catch((err) => {
-      this.logger.logErrorFailures(err);
+    if (updatedUser === null) {
       return Promise.reject(this.event.emit(UpdateUserEventEnum.FAILED, new UpdateUserFailedEvent("An error occurred while updating the user.")));
-    });0
+    }
+    return Promise.resolve(this.event.emit(UpdateUserEventEnum.SUCCESS, new UpdateUserSuccessEvent(updatedUser)));
   }
 
 }

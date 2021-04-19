@@ -12,24 +12,24 @@ class UserRepository implements UserRepositoryInterface {
     this.logger = new Log();
   }
 
-  public async save(user: User): Promise<void | UserInterface> {
-    await UserModel.create(user).then(() => {
-      return Promise.resolve(user);
+  public async save(user: User): Promise<User | null> {
+
+    return await UserModel.create(user).then(result => {
+      return new User(result.email, result.password, result.uuid)
     }).catch(error => {
       this.logger.logDatabaseAction(error);
-      return Promise.reject(`An error occurred while trying to save the user`);
+      return null;
     });
   }
 
-  public async retrieve(userId: string): Promise<UserInterface | null> {
+  public async retrieve(userId: string): Promise<User | null> {
     const user = await UserModel.findOne({ uuid: userId });
 
     if (user === null) {
       this.logger.logDatabaseAction("User Id does not exist");
-      return Promise.reject(`The User ID does not exist`);
+      return null;
     }
-
-    return Promise.resolve(user);
+    return new User(user.email, user.password, user.uuid);
   }
 
   public async delete(userId: string): Promise<void> {
@@ -50,24 +50,35 @@ class UserRepository implements UserRepositoryInterface {
     return Promise.resolve();
   }
 
-  public async update(userId: string, user: User): Promise<void | UserInterface> {
+  public async update(userId: string, user: User): Promise<User | null> {
     const idExists = await UserModel.findOne({ uuid: userId });
 
     if (idExists === null) {
       this.logger.logDatabaseAction("User Id does not exist");
-      return Promise.reject(`The User ID does not exist`);
+      return null;
     }
 
     const updatedFields = {
-      name: user.name,
       email: user.email
     }
-    await UserModel.updateOne({ uuid: userId }, updatedFields).then(() => {
-      return Promise.resolve(user);
+
+    return await UserModel.updateOne({ uuid: userId }, updatedFields).then(() => {
+      return user;
     }).catch(err => {
       this.logger.logDatabaseAction(err);
-      return Promise.reject(`An error occurred while trying to update the user`);
+      return null;
     });
+  }
+
+  public async login(email: string): Promise<User | null> {
+
+    const user = await UserModel.findOne({ email: email });
+
+    if (user === null) {
+      this.logger.logDatabaseAction("Invalid credentials.");
+      return null;
+    }
+    return new User(user.email, user.password, user.uuid);
   }
  }
 

@@ -10,7 +10,6 @@ import { GetUserFailedEvent } from "../../../domain/events/get-user-failed-event
 import GetUserFailedResponse from "../responses/get-user-failed-response";
 import GetUserCommand from "../../../domain/command/get-user-command";
 import EventEmitter from "events";
-import { Request, Response } from 'express';
 
 class GetUserController extends AbstractController {
 
@@ -28,10 +27,11 @@ class GetUserController extends AbstractController {
 
   private getUserById(): void {
     const apiAction = APIActionsEnum.GET;
-    const route = '/api/users/{userId}';
+    const route = '/api/users/';
 
-    this.express.get('/:userId', async (req, res) => {
-      const request = new GetUserRequest(req.body.requestId, req.params.userId);
+    this.express.get('/', async (req, res) => {
+      const id = res.locals.data.userId;
+      const request = new GetUserRequest(req.body.requestId, id);
       this.logger.logApiRequests(request, apiAction, route);
 
       this.eventSubscriber.on(GetUserEventEnums.SUCCESS, this.userRetrievedSuccessful.bind(this));

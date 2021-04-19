@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import {Secret} from "jsonwebtoken";
 
 class AuthenticationService {
 
@@ -7,20 +8,25 @@ class AuthenticationService {
     return bcrypt.hashSync(value, 9);
   }
 
-  public compare(hashed: string, actual: string): boolean {
-    return bcrypt.compareSync(hashed, actual);
+  public compare(actual: string, hashed: string): boolean {
+    return bcrypt.compareSync(actual, hashed);
   }
 
-  public signJWT(userId: string): string {
-    const now = new Date().getTime();
-    const expire = now + 50 * 100000;
-    const expireInseconds = Math.floor(expire / 1000);
-    const token = jwt.sign({ userId: userId}, process.env.JWT_KEY as string, {
+  public createAccessToken(userId: string, email: string): string {
+    return jwt.sign({ userId: userId, email: email}, process.env.ACCESS_TOKEN_SECRET as Secret, {
       issuer: 'REPLACE_ME ',
       algorithm: 'HS256',
-      expiresIn: expireInseconds
+      expiresIn: "10h"
     });
-    return token
+  }
+
+  public createRefreshToken(userId: string, email: string): string {
+    return jwt.sign({ userId: userId, email: email}, process.env.REFRESH_TOKEN_SECRET as Secret, {
+      issuer: 'REPLACE_ME ',
+      algorithm: 'HS256',
+      expiresIn: "2 days"
+    });
+
   }
 }
 

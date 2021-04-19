@@ -1,5 +1,6 @@
 import UserController from './user/application/controllers/user-controller';
 import AbstractController from "./common/abstract-controller";
+import AuthController from "./auth/application/controllers/auth-controller";
 
 class Routes extends AbstractController {
 
@@ -9,7 +10,8 @@ class Routes extends AbstractController {
     }
 
     private routes(): void {
-      this.express.use('/users', UserController)
+      this.express.use('/users', UserController);
+      this.express.use('/auth', AuthController);
     }
 }
 

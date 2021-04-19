@@ -2,17 +2,17 @@ import UserResponse from "../../user/application/controllers/responses/user-resp
 
 class User {
   public email: string;
-  public name: string;
+  public password: string;
   public uuid?: string;
 
-  constructor(email: string, name: string, uuid?: string) {
+  constructor(email: string, password: string, uuid?: string) {
       this.email = email;
-      this.name = name;
+      this.password = password;
       this.uuid = uuid;
   }
 
-  public getName(): string {
-    return this.name;
+  public getPassword(): string {
+    return this.password;
   }
 
   public getEmail(): string {
@@ -34,7 +34,7 @@ class User {
   }
 
   public toDomain(): UserResponse {
-    return new UserResponse(this.email, this.name, this.uuid);
+    return new UserResponse(this.email, this.uuid);
   }
 }
 

@@ -29,14 +29,14 @@ class UserDB {
 
   public defineSchema(): void {
     this.schema = new mongoose.Schema({
-      name: {
-        type: String,
-        required: true,
-      },
       email: {
         type: String,
         required: true,
         unique: true
+      },
+      password: {
+        type: String,
+        required: true,
       },
       uuid: {
         type: String,
