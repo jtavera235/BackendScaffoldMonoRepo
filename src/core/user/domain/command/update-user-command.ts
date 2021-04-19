@@ -1,7 +1,7 @@
 import EventEmitter from "events";
-import { Log } from "../../../common/logger/logger";
-import User from "../../../dto/user/user";
-import { UserRepositoryInterface } from "../../../persist/mongodb/user/user-repository-interface";
+import { Log } from "../../../../common/logger/logger";
+import User from "../../../../dto/user/user";
+import { UserRepositoryInterface } from "../../../../persist/mongodb/user/user-repository-interface";
 import UpdateUserRequest from "../../application/controllers/requests/update-user-request";
 import { UpdateUserEventEnum } from "../events/update-user-event-enum";
 import { UpdateUserFailedEvent } from "../events/update-user-failed-event";

@@ -1,4 +1,4 @@
-import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
+import { StatusCodeEnum } from "../../../../../common/enums/status-code-enums";
 import { GetUserResponseInterface } from "./get-user-response-interface";
 
 class GetUserFailedResponse implements GetUserResponseInterface {

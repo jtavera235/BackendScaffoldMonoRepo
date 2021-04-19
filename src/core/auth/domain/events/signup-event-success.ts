@@ -1,5 +1,5 @@
 import UserResponse from "../../../user/application/controllers/responses/user-response";
-import User from "../../../dto/user/user";
+import User from "../../../../dto/user/user";
 
 export class SignupEventSuccess {
 

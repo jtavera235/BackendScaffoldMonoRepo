@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import {Secret} from "jsonwebtoken";
+import AuthenticationService from "./authentication-service";
 
 
 class Middleware {
@@ -24,6 +25,7 @@ class Middleware {
       });
     }
   }
+
 }
 
 export default new Middleware();

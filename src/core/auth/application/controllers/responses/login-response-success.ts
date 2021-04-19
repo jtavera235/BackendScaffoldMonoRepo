@@ -1,4 +1,4 @@
-import {StatusCodeEnum} from "../../../../common/enums/status-code-enums";
+import {StatusCodeEnum} from "../../../../../common/enums/status-code-enums";
 import {LoginResponseInterface} from "./login-response-interface";
 
 class LoginResponseSuccess implements LoginResponseInterface {

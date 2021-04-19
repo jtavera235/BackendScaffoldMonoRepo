@@ -1,11 +1,11 @@
-import AbstractController from "../../../../common/abstract-controller";
+import AbstractController from "../../../../../common/abstract-controller";
 import { GetUserResponseInterface } from "../responses/get-user-response-interface";
-import { APIActionsEnum } from "../../../../common/enums/api-actions-enums";
+import { APIActionsEnum } from "../../../../../common/enums/api-actions-enums";
 import GetUserRequest from "../requests/get-user-request";
 import { GetUserSuccessEvent } from "../../../domain/events/get-user-success-event";
 import { GetUserEventEnums } from "../../../domain/events/get-user-event-enums";
 import GetUserSuccessResponse from "../responses/get-user-success-response";
-import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
+import { StatusCodeEnum } from "../../../../../common/enums/status-code-enums";
 import { GetUserFailedEvent } from "../../../domain/events/get-user-failed-event";
 import GetUserFailedResponse from "../responses/get-user-failed-response";
 import GetUserCommand from "../../../domain/command/get-user-command";

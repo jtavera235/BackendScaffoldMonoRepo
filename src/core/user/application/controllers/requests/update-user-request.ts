@@ -1,5 +1,5 @@
-import { RequestInterface } from "../../../../common/request-interface";
-import User from "../../../../dto/user/user";
+import { RequestInterface } from "../../../../../common/request-interface";
+import User from "../../../../../dto/user/user";
 
 class UpdateUserRequest implements RequestInterface {
 

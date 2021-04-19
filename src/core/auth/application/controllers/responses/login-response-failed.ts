@@ -1,5 +1,5 @@
 import {LoginResponseInterface} from "./login-response-interface";
-import {StatusCodeEnum} from "../../../../common/enums/status-code-enums";
+import {StatusCodeEnum} from "../../../../../common/enums/status-code-enums";
 
 class LoginResponseFailed implements LoginResponseInterface {
   public status: StatusCodeEnum;

@@ -10,7 +10,7 @@ abstract class AbstractController extends AbstractExpressClass {
 
   public logger: Log;
 
-  constructor() {
+  protected constructor() {
     super();
     this.middleware();
     this.logger = new Log();

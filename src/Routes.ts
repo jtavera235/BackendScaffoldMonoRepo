@@ -1,6 +1,6 @@
-import UserController from './user/application/controllers/user-controller';
+import UserController from './core/user/application/controllers/user-controller';
 import AbstractController from "./common/abstract-controller";
-import AuthController from "./auth/application/controllers/auth-controller";
+import AuthController from "./core/auth/application/controllers/auth-controller";
 
 class Routes extends AbstractController {
 

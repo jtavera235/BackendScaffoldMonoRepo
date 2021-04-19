@@ -1,4 +1,4 @@
-import User from '../../dto/user/user';
+import User from '../../../dto/user/user';
 
 class UserBuilder {
 

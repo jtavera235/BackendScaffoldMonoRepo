@@ -5,7 +5,8 @@ import {Secret} from "jsonwebtoken";
 class AuthenticationService {
 
   public hash(value: string): string {
-    return bcrypt.hashSync(value, 9);
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(value, salt);
   }
 
   public compare(actual: string, hashed: string): boolean {
@@ -26,8 +27,8 @@ class AuthenticationService {
       algorithm: 'HS256',
       expiresIn: "2 days"
     });
-
   }
+
 }
 
 export default AuthenticationService;

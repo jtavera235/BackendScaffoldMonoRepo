@@ -6,13 +6,13 @@ import Routes from './Routes';
 import * as bodyParser from "body-parser";
 import UserDB from "./persist/mongodb/user/user-db";
 import { Log } from "./common/logger/logger";
-
+import mongoSanitize from 'express-mongo-sanitize';
 
 class App {
    
   public express: express.Application;
   private readonly PORT: number;
-  private database: UserDB;
+  private userDatabase: UserDB;
   private logger: Log;
 
   constructor() {
@@ -22,7 +22,7 @@ class App {
     this.verifyPorEnvExists();
     this.logger = new Log();
     this.routes();
-    this.database = new UserDB();
+    this.userDatabase = new UserDB();
     this.PORT = parseInt(process.env.PORT as string, 10);
     this.establishConnections();
   }
@@ -32,6 +32,12 @@ class App {
     this.express.use(helmet());
     this.express.use(express.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(express.urlencoded({ extended: true, limit: "1kb" }));
+    this.express.use(express.json({ limit: "1kb" }));
+    this.express.use(bodyParser.json({limit: '1kb'}));
+    this.express.use(mongoSanitize({
+      replaceWith: '_'
+    }));
   }
 
   private verifyPorEnvExists(): void {
@@ -46,7 +52,8 @@ class App {
       res.send("Successfully health check");
     });
 
-    const route = '/api';
+    const apiVersion = process.env.API_VERSION as string;
+    const route = '/api/v' + apiVersion;
     this.express.use(route, Routes);
 
     // eslint:disable-next-line
@@ -56,7 +63,7 @@ class App {
   }
 
   private async establishConnections(): Promise<void> {
-    await this.database.connectToDB();
+    await this.userDatabase.connectToDB();
     this.express.listen(this.PORT, () => {
       this.logger.logMessage(`[server]: Server is running at https://localhost:${this.PORT}`);
       this.logger.logMessage('Waiting to receive incoming requests');

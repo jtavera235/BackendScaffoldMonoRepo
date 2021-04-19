@@ -3,7 +3,7 @@ import express from "express";
 abstract class AbstractExpressClass {
     public express: express.Application;
 
-    constructor() {
+    protected constructor() {
       this.express = express();
     }
 }

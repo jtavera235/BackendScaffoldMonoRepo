@@ -1,4 +1,4 @@
-import {RequestInterface} from "../../../../common/request-interface";
+import {RequestInterface} from "../../../../../common/request-interface";
 
 
 class LoginRequest implements RequestInterface {

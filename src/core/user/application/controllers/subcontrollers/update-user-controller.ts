@@ -1,7 +1,7 @@
 import EventEmitter from "events";
-import AbstractController from "../../../../common/abstract-controller";
-import { APIActionsEnum } from "../../../../common/enums/api-actions-enums";
-import { StatusCodeEnum } from "../../../../common/enums/status-code-enums";
+import AbstractController from "../../../../../common/abstract-controller";
+import { APIActionsEnum } from "../../../../../common/enums/api-actions-enums";
+import { StatusCodeEnum } from "../../../../../common/enums/status-code-enums";
 import UpdateUserCommand from "../../../domain/command/update-user-command";
 import { UpdateUserEventEnum } from "../../../domain/events/update-user-event-enum";
 import { UpdateUserFailedEvent } from "../../../domain/events/update-user-failed-event";

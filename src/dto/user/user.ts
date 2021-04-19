@@ -1,4 +1,4 @@
-import UserResponse from "../../user/application/controllers/responses/user-response";
+import UserResponse from "../../core/user/application/controllers/responses/user-response";
 
 class User {
   public email: string;
