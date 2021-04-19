@@ -7,6 +7,7 @@ import * as bodyParser from "body-parser";
 import UserDB from "./persist/mongodb/user/user-db";
 import { Log } from "./common/logger/logger";
 import mongoSanitize from 'express-mongo-sanitize';
+import Middleware from "./common/middleware/auth/middleware";
 
 class App {
    
@@ -35,6 +36,8 @@ class App {
     this.express.use(express.urlencoded({ extended: true, limit: "1kb" }));
     this.express.use(express.json({ limit: "1kb" }));
     this.express.use(bodyParser.json({limit: '1kb'}));
+    this.express.use(Middleware.logResponse);
+    this.express.use(Middleware.logRequest);
     this.express.use(mongoSanitize({
       replaceWith: '_'
     }));

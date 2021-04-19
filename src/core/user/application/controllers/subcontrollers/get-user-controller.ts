@@ -1,6 +1,5 @@
 import AbstractController from "../../../../../common/abstract-controller";
 import { GetUserResponseInterface } from "../responses/get-user-response-interface";
-import { APIActionsEnum } from "../../../../../common/enums/api-actions-enums";
 import GetUserRequest from "../requests/get-user-request";
 import { GetUserSuccessEvent } from "../../../domain/events/get-user-success-event";
 import { GetUserEventEnums } from "../../../domain/events/get-user-event-enums";
@@ -26,24 +25,15 @@ class GetUserController extends AbstractController {
   }
 
   private getUserById(): void {
-    const apiAction = APIActionsEnum.GET;
-    const route = '/api/users/';
-
     this.express.get('/', async (req, res) => {
       const id = res.locals.data.userId;
       const request = new GetUserRequest(req.body.requestId, id);
-      this.logger.logApiRequests(request, apiAction, route);
 
       this.eventSubscriber.on(GetUserEventEnums.SUCCESS, this.userRetrievedSuccessful.bind(this));
       this.eventSubscriber.on(GetUserEventEnums.FAILED, this.userRetrievedFailed.bind(this));
 
-      try {
-        await this.command.execute(request);
-      }
-      /* eslint-disable */
-      catch(_) {}
+      await this.command.execute(request);
 
-      this.logger.logApiResponses(this.response, apiAction, route);
       return res
       .status(this.response.getStatus())
       .json(this.response);

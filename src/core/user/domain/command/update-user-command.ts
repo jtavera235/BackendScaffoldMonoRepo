@@ -18,13 +18,14 @@ class UpdateUserCommand {
       this.logger = new Log();
     }
 
-  public async execute(request: UpdateUserRequest): Promise<boolean> {
+  public async execute(request: UpdateUserRequest): Promise<void> {
     const updatedUser = await this.userRepository.update(request.userId, request.user);
 
     if (updatedUser === null) {
-      return Promise.reject(this.event.emit(UpdateUserEventEnum.FAILED, new UpdateUserFailedEvent("An error occurred while updating the user.")));
+      this.event.emit(UpdateUserEventEnum.FAILED, new UpdateUserFailedEvent("An error occurred while updating the user."));
+    } else {
+      this.event.emit(UpdateUserEventEnum.SUCCESS, new UpdateUserSuccessEvent(updatedUser));
     }
-    return Promise.resolve(this.event.emit(UpdateUserEventEnum.SUCCESS, new UpdateUserSuccessEvent(updatedUser)));
   }
 
 }

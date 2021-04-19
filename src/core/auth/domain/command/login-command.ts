@@ -19,13 +19,15 @@ class LoginCommand {
   }
 
 
-  public async execute(request: LoginRequest): Promise<boolean> {
+  public async execute(request: LoginRequest): Promise<void> {
     const password = request.password;
 
     const user = await this.userRepository.login(request.email);
     if (user === null) {
-      return Promise.reject(this.events.emit(LoginEventsEnum.FAILED, new LoginEventFailed("Error occurred while logging user in.")));
+      this.events.emit(LoginEventsEnum.FAILED, new LoginEventFailed("Error occurred while logging user in."));
+      return;
     }
+
     const hashedPassword = user.password;
     if (this.authService.compare(password, hashedPassword)) {
 
@@ -33,9 +35,10 @@ class LoginCommand {
       const accessToken = this.authService.createAccessToken(user.getId()!, user.getEmail());
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const refreshToken = this.authService.createRefreshToken(user.getId()!, user.getEmail());
-      return Promise.resolve(this.events.emit(LoginEventsEnum.SUCCESS, new LoginEventSuccess(accessToken, refreshToken)));
+      this.events.emit(LoginEventsEnum.SUCCESS, new LoginEventSuccess(accessToken, refreshToken));
+    } else {
+      this.events.emit(LoginEventsEnum.FAILED, new LoginEventFailed("Error occurred while logging user in."));
     }
-    return Promise.reject(this.events.emit(LoginEventsEnum.FAILED, new LoginEventFailed("Error occurred while logging user in.")));
   }
 }
 

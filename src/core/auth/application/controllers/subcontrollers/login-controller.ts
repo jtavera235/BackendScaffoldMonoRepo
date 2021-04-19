@@ -2,7 +2,6 @@ import AbstractController from "../../../../../common/abstract-controller";
 import {LoginResponseInterface} from "../responses/login-response-interface";
 import EventEmitter from "events";
 import LoginCommand from "../../../domain/command/login-command";
-import {APIActionsEnum} from "../../../../../common/enums/api-actions-enums";
 import LoginRequest from "../requests/login-request";
 import {LoginEventsEnum} from "../../../domain/events/login-events-enum";
 import LoginResponseSuccess from "../responses/login-response-success";
@@ -26,24 +25,15 @@ class LoginController extends AbstractController {
   }
 
   private login(): void {
-    const apiAction = APIActionsEnum.POST;
-    const route = '/api/auth/login';
-
     this.express.post('/login', async (req, res) => {
 
       const request = new LoginRequest(req.body.requestId, req.body.email, req.body.password);
-      this.logger.logApiRequests(request, apiAction, route);
 
       this.eventSubscriber.on(LoginEventsEnum.SUCCESS, this.loginSuccess.bind(this));
       this.eventSubscriber.on(LoginEventsEnum.FAILED, this.loginFailed.bind(this));
 
-      try {
-        await this.command.execute(request);
-      }
-      /* eslint-disable */
-      catch(_) {}
+      await this.command.execute(request);
 
-      this.logger.logApiResponses(this.response, apiAction, route);
       return res
       .status(this.response.getStatus())
       .json(this.response);

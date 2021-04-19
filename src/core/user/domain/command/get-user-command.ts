@@ -18,15 +18,15 @@ class GetUserCommand {
       this.logger = new Log();
   }
 
-  public async execute(request: GetUserRequest): Promise<boolean> {
+  public async execute(request: GetUserRequest): Promise<void> {
 
     const userResult = await this.userRepository.retrieve(request.userId);
 
     if (userResult === null) {
-      return Promise.reject(this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found")));
+      this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found"));
+    } else {
+      this.event.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(userResult.toDomain()));
     }
-    return Promise.resolve(this.event.emit(GetUserEventEnums.SUCCESS, new GetUserSuccessEvent(userResult.toDomain())));
-
   }
 }
 

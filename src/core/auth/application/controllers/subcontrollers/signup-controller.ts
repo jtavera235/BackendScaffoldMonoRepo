@@ -1,8 +1,5 @@
 import AbstractController from "../../../../../common/abstract-controller";
-import {LoginResponseInterface} from "../responses/login-response-interface";
 import EventEmitter from "events";
-import LoginCommand from "../../../domain/command/login-command";
-import {APIActionsEnum} from "../../../../../common/enums/api-actions-enums";
 import {StatusCodeEnum} from "../../../../../common/enums/status-code-enums";
 import SignupRequest from "../requests/signup-request";
 import {SignupResponseInterface} from "../responses/signup-response-interface";
@@ -28,24 +25,16 @@ class SignupController extends AbstractController {
   }
 
   private login(): void {
-    const apiAction = APIActionsEnum.POST;
-    const route = '/api/auth/register';
 
-    this.express.post('/register', async (req, res) => {
+    this.express.post('/register',  async (req, res) => {
 
       const request = new SignupRequest(req.body.requestId, req.body.email, req.body.password);
-      this.logger.logApiRequests(request, apiAction, route);
 
       this.eventSubscriber.on(SignupEventsEnum.SUCCESS, this.signupSuccess.bind(this));
       this.eventSubscriber.on(SignupEventsEnum.FAILED, this.signupFailed.bind(this));
 
-      try {
-        await this.command.execute(request);
-      }
-          /* eslint-disable */
-      catch(_) {}
+      await this.command.execute(request);
 
-      this.logger.logApiResponses(this.response, apiAction, route);
       return res
       .status(this.response.getStatus())
       .json(this.response);

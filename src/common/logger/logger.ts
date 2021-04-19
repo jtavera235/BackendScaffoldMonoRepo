@@ -1,8 +1,5 @@
 import { Logger } from 'tslog';
 import GeneralError from '../general-error';
-import { RequestInterface } from '../request-interface';
-import { ResponseInterface } from '../response-interface';
-import { APIActionsEnum } from "../enums/api-actions-enums";
 
 export class Log {
   private logger: Logger;
@@ -14,18 +11,20 @@ export class Log {
     });
   }
 
-  public logApiRequests(request: RequestInterface, action: APIActionsEnum, route: string): void { 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public logApiRequests(body: any, action: string, route: string): void {
     this.logger.debug({
       message: `Starting ${action} request made to ${route}`,
-      request: request,
-      requestId: request.requestId,
+      request: body,
+      requestId: body.requestId,
       method: action,
       url: route,
       timestamp: new Date().toLocaleString(),
     });
   }
 
-  public logApiResponses(response: ResponseInterface, action: APIActionsEnum, route: string): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public logApiResponses(response: any, action: string, route: string): void {
     this.logger.debug({
       message: `Finished ${action} request made to ${route}`,
       response: response,

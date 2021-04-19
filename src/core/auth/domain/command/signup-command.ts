@@ -22,7 +22,7 @@ class SignupCommand {
   }
 
 
-  public async execute(request: SignupRequest): Promise<boolean> {
+  public async execute(request: SignupRequest): Promise<void> {
     const builder = new UserBuilder();
     builder.withEmail(request.email);
     const password = this.authService.hash(request.password);
@@ -32,10 +32,10 @@ class SignupCommand {
 
     const newUser = await this.userRepository.save(this.user);
     if (newUser === null) {
-      return Promise.reject(this.events.emit(SignupEventsEnum.FAILED, new SignupEventFailed("Error occurred while creating a new user.")));
+      this.events.emit(SignupEventsEnum.FAILED, new SignupEventFailed("Error occurred while creating a new user."));
+    } else {
+      this.events.emit(SignupEventsEnum.SUCCESS, new SignupEventSuccess(new User(newUser.email, newUser.password, newUser.uuid)));
     }
-
-    return Promise.resolve(this.events.emit(SignupEventsEnum.SUCCESS, new SignupEventSuccess(new User(newUser.email, newUser.password, newUser.uuid))));
   }
 }
 
