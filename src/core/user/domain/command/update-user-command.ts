@@ -1,19 +1,20 @@
-import EventEmitter from "events";
 import { Log } from "../../../../common/logger/logger";
-import User from "../../../../dto/user/user";
 import { UserRepositoryInterface } from "../../../../persist/mongodb/user/user-repository-interface";
 import UpdateUserRequest from "../../application/controllers/requests/update-user-request";
 import { UpdateUserEventEnum } from "../events/update-user-event-enum";
 import { UpdateUserFailedEvent } from "../events/update-user-failed-event";
 import { UpdateUserSuccessEvent } from "../events/update-user-success-event";
+import {Inject, Service} from "typedi";
+import { CustomEvent} from "../../../../common/CustomEvent";
 
+@Service('update.users.command')
 class UpdateUserCommand {
 
   private logger: Log;
 
   constructor(
-    private readonly event: EventEmitter,
-    private readonly userRepository: UserRepositoryInterface
+    @Inject('event.emitter') private readonly event: CustomEvent,
+    @Inject('user.repository') private readonly userRepository: UserRepositoryInterface
     ) {
       this.logger = new Log();
     }

@@ -6,15 +6,18 @@ import {Log} from "../../../../common/logger/logger";
 import {LoginEventsEnum} from "../events/login-events-enum";
 import {LoginEventFailed} from "../events/login-event-failed";
 import {LoginEventSuccess} from "../events/login-event-success";
+import {Inject, Service} from "typedi";
+import {CustomEvent} from "../../../../common/CustomEvent";
 
+@Service('login.command')
 class LoginCommand {
 
   private logger: Log;
 
   constructor(
-      private readonly events: EventEmitter,
-      private readonly userRepository: UserRepositoryInterface,
-      private readonly authService: AuthenticationService) {
+      @Inject('event.emitter')private readonly events: CustomEvent,
+      @Inject('user.repository')private readonly userRepository: UserRepositoryInterface,
+      @Inject('auth.service')private readonly authService: AuthenticationService) {
     this.logger = new Log();
   }
 

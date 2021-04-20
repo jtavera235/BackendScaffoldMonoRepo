@@ -1,26 +1,25 @@
 import { UserRepositoryInterface } from "../../../../persist/mongodb/user/user-repository-interface";
-import User from '../../../../dto/user/user';
-import EventEmitter from "events";
-import GetUserRequest from "../../application/controllers/requests/get-user-request";
 import { GetUserFailedEvent } from "../events/get-user-failed-event";
 import { GetUserEventEnums } from "../events/get-user-event-enums";
 import { GetUserSuccessEvent } from "../events/get-user-success-event";
-import { UserInterface } from "../../../../persist/mongodb/user/user-interface";
 import { Log } from "../../../../common/logger/logger";
+import {Inject, Service} from "typedi";
+import {CustomEvent} from "../../../../common/CustomEvent";
 
+@Service('get.users.command')
 class GetUserCommand {
   private logger: Log;
 
   constructor(
-    private readonly event: EventEmitter,
-    private readonly userRepository: UserRepositoryInterface
+    @Inject('user.repository') private readonly userRepository: UserRepositoryInterface,
+    @Inject('event.emitter') private readonly event: CustomEvent
     ) {
       this.logger = new Log();
   }
 
-  public async execute(request: GetUserRequest): Promise<void> {
+  public async execute(id: string): Promise<void> {
 
-    const userResult = await this.userRepository.retrieve(request.userId);
+    const userResult = await this.userRepository.retrieve(id);
 
     if (userResult === null) {
       this.event.emit(GetUserEventEnums.FAILED, new GetUserFailedEvent("User with specified ID was not found"));

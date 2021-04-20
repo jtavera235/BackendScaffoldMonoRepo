@@ -9,36 +9,35 @@ import {StatusCodeEnum} from "../../../../../common/enums/status-code-enums";
 import {LoginEventSuccess} from "../../../domain/events/login-event-success";
 import {LoginEventFailed} from "../../../domain/events/login-event-failed";
 import LoginResponseFailed from "../responses/login-response-failed";
+import {Body, JsonController, Post, Res} from "routing-controllers";
+import {Inject, Service} from "typedi";
 
+
+@JsonController()
+@Service()
 class LoginController extends AbstractController {
 
   public response!: LoginResponseInterface;
 
-  constructor(private readonly eventSubscriber: EventEmitter,
-              private readonly command: LoginCommand) {
+  constructor(
+      @Inject('event.emitter') private readonly eventSubscriber: EventEmitter,
+      @Inject('login.command') private readonly command: LoginCommand
+  ) {
     super();
-    this.routes();
   }
 
-  private routes(): void {
-    this.login();
-  }
 
-  private login(): void {
-    this.express.post('/login', async (req, res) => {
+  @Post("/login")
+  private async login(@Body() request: LoginRequest, @Res() res: any): Promise<void> {
+    this.eventSubscriber.on(LoginEventsEnum.SUCCESS, this.loginSuccess.bind(this));
+    this.eventSubscriber.on(LoginEventsEnum.FAILED, this.loginFailed.bind(this));
 
-      const request = new LoginRequest(req.body.requestId, req.body.email, req.body.password);
+    await this.command.execute(request);
 
-      this.eventSubscriber.on(LoginEventsEnum.SUCCESS, this.loginSuccess.bind(this));
-      this.eventSubscriber.on(LoginEventsEnum.FAILED, this.loginFailed.bind(this));
+    return res
+    .status(this.response.getStatus())
+    .json(this.response);
 
-      await this.command.execute(request);
-
-      return res
-      .status(this.response.getStatus())
-      .json(this.response);
-
-    });
   }
 
   private loginSuccess(event: LoginEventSuccess): void {

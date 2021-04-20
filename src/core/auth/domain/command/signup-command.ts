@@ -1,4 +1,3 @@
-import EventEmitter from "events";
 import {UserRepositoryInterface} from "../../../../persist/mongodb/user/user-repository-interface";
 import AuthenticationService from "../../../../common/middleware/auth/authentication-service";
 import {Log} from "../../../../common/logger/logger";
@@ -8,16 +7,20 @@ import User from "../../../../dto/user/user";
 import {SignupEventFailed} from "../events/signup-event-failed";
 import {SignupEventSuccess} from "../events/signup-event-success";
 import {SignupEventsEnum} from "../events/signup-event-enum";
+import {Inject, Service} from "typedi";
+import {CustomEvent} from "../../../../common/CustomEvent";
 
+@Service('signup.command')
 class SignupCommand {
 
   private logger: Log;
   private user!: User;
 
   constructor(
-      private readonly events: EventEmitter,
-      private readonly userRepository: UserRepositoryInterface,
-      private readonly authService: AuthenticationService) {
+      @Inject('event.emitter')private readonly events: CustomEvent,
+      @Inject('user.repository')private readonly userRepository: UserRepositoryInterface,
+      @Inject('auth.service')private readonly authService: AuthenticationService
+  ) {
     this.logger = new Log();
   }
 

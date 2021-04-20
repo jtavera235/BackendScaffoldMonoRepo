@@ -1,7 +1,9 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import {Secret} from "jsonwebtoken";
+import {Service} from "typedi";
 
+@Service('auth.service')
 class AuthenticationService {
 
   public hash(value: string): string {

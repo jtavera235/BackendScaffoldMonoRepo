@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
@@ -8,6 +9,26 @@ import UserDB from "./persist/mongodb/user/user-db";
 import { Log } from "./common/logger/logger";
 import mongoSanitize from 'express-mongo-sanitize';
 import Middleware from "./common/middleware/auth/middleware";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
+import { Container } from 'typedi';
+import { container } from "tsyringe";
+import GetUserController
+  from "./core/user/application/controllers/subcontrollers/get-user-controller";
+import UpdateUserController
+  from "./core/user/application/controllers/subcontrollers/update-user-controller";
+import UserRepository from "./persist/mongodb/user/user-repository";
+import UserController from "./core/user/application/controllers/user-controller";
+import {useContainer, useExpressServer} from "routing-controllers";
+import EventEmitter from 'events';
+import { CustomEvent } from "./common/CustomEvent";
+import AuthenticationService from "./common/middleware/auth/authentication-service";
+
+useContainer(Container);
+
+Container.set('user.repository', new UserRepository());
+Container.set('event.emitter', new CustomEvent());
+Container.set('auth.service', new AuthenticationService());
 
 class App {
    
@@ -41,6 +62,7 @@ class App {
     this.express.use(mongoSanitize({
       replaceWith: '_'
     }));
+
   }
 
   private verifyPorEnvExists(): void {
@@ -54,15 +76,8 @@ class App {
     this.express.get("/", (_, res) => {
       res.send("Successfully health check");
     });
+    this.express.use("/api/v1", Routes);
 
-    const apiVersion = process.env.API_VERSION as string;
-    const route = '/api/v' + apiVersion;
-    this.express.use(route, Routes);
-
-    // eslint:disable-next-line
-    this.express.use("*", (_, res) => {
-      res.send("Specified route is incorrect");
-    });
   }
 
   private async establishConnections(): Promise<void> {
@@ -72,6 +87,7 @@ class App {
       this.logger.logMessage('Waiting to receive incoming requests');
     });
   }
+
 }
 
 export default new App().express;

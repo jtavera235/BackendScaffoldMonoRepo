@@ -1,5 +1,4 @@
 import AbstractController from "../../../../../common/abstract-controller";
-import EventEmitter from "events";
 import {StatusCodeEnum} from "../../../../../common/enums/status-code-enums";
 import SignupRequest from "../requests/signup-request";
 import {SignupResponseInterface} from "../responses/signup-response-interface";
@@ -9,37 +8,37 @@ import {SignupEventsEnum} from "../../../domain/events/signup-event-enum";
 import {SignupEventSuccess} from "../../../domain/events/signup-event-success";
 import {SignupEventFailed} from "../../../domain/events/signup-event-failed";
 import SignupCommand from "../../../domain/command/signup-command";
+import {Inject, Service} from "typedi";
+import {CustomEvent} from "../../../../../common/CustomEvent";
+import {Body, JsonController, Post, Res} from "routing-controllers";
 
+@JsonController()
+@Service()
 class SignupController extends AbstractController {
 
   public response!: SignupResponseInterface;
 
-  constructor(private readonly eventSubscriber: EventEmitter,
-              private readonly command: SignupCommand) {
+  constructor(
+      @Inject('event.emitter') private readonly eventSubscriber: CustomEvent,
+      @Inject('signup.command') private readonly command: SignupCommand) {
+
     super();
-    this.routes();
   }
 
-  private routes(): void {
-    this.login();
-  }
 
-  private login(): void {
 
-    this.express.post('/register',  async (req, res) => {
+  @Post("/register")
+  private async register(@Body() request: SignupRequest, @Res() res: any): Promise<void> {
 
-      const request = new SignupRequest(req.body.requestId, req.body.email, req.body.password);
+    this.eventSubscriber.on(SignupEventsEnum.SUCCESS, this.signupSuccess.bind(this));
+    this.eventSubscriber.on(SignupEventsEnum.FAILED, this.signupFailed.bind(this));
 
-      this.eventSubscriber.on(SignupEventsEnum.SUCCESS, this.signupSuccess.bind(this));
-      this.eventSubscriber.on(SignupEventsEnum.FAILED, this.signupFailed.bind(this));
+    await this.command.execute(request);
 
-      await this.command.execute(request);
+    return res
+    .status(this.response.getStatus())
+    .json(this.response);
 
-      return res
-      .status(this.response.getStatus())
-      .json(this.response);
-
-    });
   }
 
   private signupSuccess(event: SignupEventSuccess): void {
