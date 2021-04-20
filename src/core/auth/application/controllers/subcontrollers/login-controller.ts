@@ -11,7 +11,7 @@ import {LoginEventFailed} from "../../../domain/events/login-event-failed";
 import LoginResponseFailed from "../responses/login-response-failed";
 import {Body, JsonController, Post, Res} from "routing-controllers";
 import {Inject, Service} from "typedi";
-
+import {CustomEvent} from "../../../../../common/CustomEvent";
 
 @JsonController()
 @Service()
@@ -20,7 +20,7 @@ class LoginController extends AbstractController {
   public response!: LoginResponseInterface;
 
   constructor(
-      @Inject('event.emitter') private readonly eventSubscriber: EventEmitter,
+      @Inject('event.emitter') private readonly eventSubscriber: CustomEvent,
       @Inject('login.command') private readonly command: LoginCommand
   ) {
     super();
@@ -37,7 +37,6 @@ class LoginController extends AbstractController {
     return res
     .status(this.response.getStatus())
     .json(this.response);
-
   }
 
   private loginSuccess(event: LoginEventSuccess): void {

@@ -13,7 +13,6 @@ class AuthController extends AbstractController {
   private routes(): void {
 
     useExpressServer(this.express, {
-      routePrefix: "/auth",
       // register created express server in routing-controllers
       controllers: [LoginController, SignupController], // and configure it the way you need (controllers, validation, etc.)
     });

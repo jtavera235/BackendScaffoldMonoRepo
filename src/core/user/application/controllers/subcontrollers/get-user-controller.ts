@@ -7,27 +7,29 @@ import { StatusCodeEnum } from "../../../../../common/enums/status-code-enums";
 import { GetUserFailedEvent } from "../../../domain/events/get-user-failed-event";
 import GetUserFailedResponse from "../responses/get-user-failed-response";
 import GetUserCommand from "../../../domain/command/get-user-command";
-import {Get, JsonController, Res, UseBefore} from "routing-controllers";
-import Middleware from "../../../../../common/middleware/auth/middleware";
-import {Inject, Service} from "typedi";
 import { CustomEvent } from "../../../../../common/CustomEvent";
+import {JsonController, Get, Res, UseBefore} from "routing-controllers";
+import {Inject, Service} from "typedi";
+import {Middleware} from "../../../../../common/middleware/auth/middleware";
+
 
 @JsonController()
-@UseBefore(Middleware.verify)
 @Service()
 class GetUserController extends AbstractController {
 
-  private response!: GetUserResponseInterface;
+  public response!: GetUserResponseInterface
 
-  public constructor(
-      @Inject('get.users.command') private readonly command: GetUserCommand,
-      @Inject('event.emitter') private readonly eventSubscriber: CustomEvent
+  constructor(
+      @Inject('event.emitter') private readonly eventSubscriber: CustomEvent,
+      @Inject('get.users.command') private readonly command: GetUserCommand
   ) {
     super();
   }
 
+  @UseBefore(Middleware)
   @Get("/")
-  private async getUserById(@Res() res: any): Promise<void> {
+  private async get(@Res() res: any): Promise<void> {
+
 
     const id = res.locals.data.userId;
 

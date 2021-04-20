@@ -23,6 +23,7 @@ import {useContainer, useExpressServer} from "routing-controllers";
 import EventEmitter from 'events';
 import { CustomEvent } from "./common/CustomEvent";
 import AuthenticationService from "./common/middleware/auth/authentication-service";
+import LogMiddleware from "./common/middleware/LogMiddleware";
 
 useContainer(Container);
 
@@ -57,8 +58,8 @@ class App {
     this.express.use(express.urlencoded({ extended: true, limit: "1kb" }));
     this.express.use(express.json({ limit: "1kb" }));
     this.express.use(bodyParser.json({limit: '1kb'}));
-    this.express.use(Middleware.logResponse);
-    this.express.use(Middleware.logRequest);
+    this.express.use(LogMiddleware.logRequest);
+    this.express.use(LogMiddleware.logResponse);
     this.express.use(mongoSanitize({
       replaceWith: '_'
     }));

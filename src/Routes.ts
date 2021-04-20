@@ -11,8 +11,8 @@ class Routes extends AbstractController {
 
     private routes(): void {
 
-      this.express.use(UserController);
-      this.express.use(AuthController);
+      this.express.use("/auth", AuthController);
+      this.express.use("/users", UserController);
 
     }
 
