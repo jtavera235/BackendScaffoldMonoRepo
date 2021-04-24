@@ -1,6 +1,5 @@
 import AbstractController from "../../../../../common/abstract-controller";
 import {LoginResponseInterface} from "../responses/login-response-interface";
-import EventEmitter from "events";
 import LoginCommand from "../../../domain/command/login-command";
 import LoginRequest from "../requests/login-request";
 import {LoginEventsEnum} from "../../../domain/events/login-events-enum";

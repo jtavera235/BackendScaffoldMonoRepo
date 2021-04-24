@@ -3,7 +3,7 @@ import {Log} from "../logger/logger";
 
 class LogMiddleware {
 
-  public static logRequest(request: express.Request, _: express.Response, next: express.NextFunction) {
+  public static logRequest(request: express.Request, _: express.Response, next: express.NextFunction): void {
     const logger = new Log();
     const data = request.body;
     const action = request.method;
@@ -13,7 +13,7 @@ class LogMiddleware {
   }
 
 
-  public static logResponse(req: express.Request, res: express.Response, next: express.NextFunction) {
+  public static logResponse(req: express.Request, res: express.Response, next: express.NextFunction): void {
     const logger = new Log();
     const action = req.method;
     const path = req.originalUrl;

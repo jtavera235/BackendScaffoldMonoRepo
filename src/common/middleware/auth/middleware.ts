@@ -7,6 +7,7 @@ import {Service} from "typedi";
 @Service()
 export class Middleware implements ExpressMiddlewareInterface {
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   use(request: any, response: any, next: (err?: any) => any): any {
     const token = request.headers.authorization?.split(' ')[1];
     if (token) {
