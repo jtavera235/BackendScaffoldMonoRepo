@@ -1,5 +1,4 @@
 import LoginRequest from "../../application/controllers/requests/login-request";
-import EventEmitter from "events";
 import {UserRepositoryInterface} from "../../../../persist/mongodb/user/user-repository-interface";
 import AuthenticationService from "../../../../common/middleware/auth/authentication-service";
 import {Log} from "../../../../common/logger/logger";

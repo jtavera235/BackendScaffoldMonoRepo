@@ -1,7 +1,5 @@
-import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import {Secret} from "jsonwebtoken";
-import {Log} from "../../logger/logger";
 import {ExpressMiddlewareInterface} from "routing-controllers";
 import {Service} from "typedi";
 

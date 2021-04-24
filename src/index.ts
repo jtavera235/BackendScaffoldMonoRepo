@@ -8,19 +8,9 @@ import * as bodyParser from "body-parser";
 import UserDB from "./persist/mongodb/user/user-db";
 import { Log } from "./common/logger/logger";
 import mongoSanitize from 'express-mongo-sanitize';
-import Middleware from "./common/middleware/auth/middleware";
-import * as Sentry from "@sentry/node";
-import * as Tracing from "@sentry/tracing";
 import { Container } from 'typedi';
-import { container } from "tsyringe";
-import GetUserController
-  from "./core/user/application/controllers/subcontrollers/get-user-controller";
-import UpdateUserController
-  from "./core/user/application/controllers/subcontrollers/update-user-controller";
 import UserRepository from "./persist/mongodb/user/user-repository";
-import UserController from "./core/user/application/controllers/user-controller";
-import {useContainer, useExpressServer} from "routing-controllers";
-import EventEmitter from 'events';
+import {useContainer} from "routing-controllers";
 import { CustomEvent } from "./common/CustomEvent";
 import AuthenticationService from "./common/middleware/auth/authentication-service";
 import LogMiddleware from "./common/middleware/LogMiddleware";

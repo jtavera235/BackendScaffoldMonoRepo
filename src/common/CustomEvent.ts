@@ -11,11 +11,12 @@ export class CustomEvent {
     this.eventEmitter = new EventEmitter();
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public emit(eventName: string, event: any): void {
     this.eventEmitter.emit(eventName, event);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types,@typescript-eslint/explicit-module-boundary-types
   public on(event: string, listener: any): void {
     this.eventEmitter.on(event, listener);
   }

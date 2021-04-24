@@ -5,7 +5,7 @@ import UserRepository from "./user-repository";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
-export async function seedUsers() {
+export async function seedUsers(): Promise<void> {
   dotenv.config();
   await mongoose.connect(process.env.USER_DB_URI as string, {
     useCreateIndex: true,
