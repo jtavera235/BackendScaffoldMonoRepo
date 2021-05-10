@@ -2,7 +2,7 @@ import AbstractController from "../../../../common/abstract-controller";
 import {useExpressServer} from "routing-controllers";
 import GetUserController from "./subcontrollers/get-user-controller";
 import UpdateUserController from "./subcontrollers/update-user-controller";
-import Middleware from "../../../../common/middleware/auth/middleware";
+import Middleware from "../../../../common/middleware/middleware";
 
 class UserController extends AbstractController {
 

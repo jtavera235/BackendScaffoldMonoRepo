@@ -1,5 +1,5 @@
 import {UserRepositoryInterface} from "../../../../persist/mongodb/user/user-repository-interface";
-import AuthenticationService from "../../../../common/middleware/auth/authentication-service";
+import AuthenticationService from "../../../../common/auth/authentication-service";
 import {Log} from "../../../../common/logger/logger";
 import SignupRequest from "../../application/controllers/requests/signup-request";
 import UserBuilder from "../../../user/domain/user-builder";

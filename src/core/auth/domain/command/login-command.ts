@@ -1,6 +1,6 @@
 import LoginRequest from "../../application/controllers/requests/login-request";
 import {UserRepositoryInterface} from "../../../../persist/mongodb/user/user-repository-interface";
-import AuthenticationService from "../../../../common/middleware/auth/authentication-service";
+import AuthenticationService from "../../../../common/auth/authentication-service";
 import {Log} from "../../../../common/logger/logger";
 import {LoginEventsEnum} from "../events/login-events-enum";
 import {LoginEventFailed} from "../events/login-event-failed";

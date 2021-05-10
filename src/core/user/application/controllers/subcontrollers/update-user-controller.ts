@@ -11,7 +11,7 @@ import UpdateUserResponseSuccess from "../responses/update-user-response-success
 import {Body, JsonController, Put, Req, Res, UseBefore} from "routing-controllers";
 import {Inject, Service} from "typedi";
 import {CustomEvent} from "../../../../../common/CustomEvent";
-import Middleware from "../../../../../common/middleware/auth/middleware";
+import Middleware from "../../../../../common/middleware/middleware";
 
 @JsonController()
 @Service()

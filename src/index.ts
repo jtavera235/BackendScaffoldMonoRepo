@@ -12,7 +12,7 @@ import { Container } from 'typedi';
 import UserRepository from "./persist/mongodb/user/user-repository";
 import {useContainer} from "routing-controllers";
 import { CustomEvent } from "./common/CustomEvent";
-import AuthenticationService from "./common/middleware/auth/authentication-service";
+import AuthenticationService from "./common/auth/authentication-service";
 import LogMiddleware from "./common/middleware/LogMiddleware";
 
 useContainer(Container);

@@ -10,7 +10,7 @@ import GetUserCommand from "../../../domain/command/get-user-command";
 import { CustomEvent } from "../../../../../common/CustomEvent";
 import {JsonController, Get, Res, UseBefore} from "routing-controllers";
 import {Inject, Service} from "typedi";
-import {Middleware} from "../../../../../common/middleware/auth/middleware";
+import {Middleware} from "../../../../../common/middleware/middleware";
 
 
 @JsonController()
