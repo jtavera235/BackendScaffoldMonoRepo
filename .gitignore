@@ -3,3 +3,4 @@ node_modules/
 app.log
 *.log
 Dockerfile
+.DS_Store
